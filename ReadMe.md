@@ -1,120 +1,112 @@
-## Guess It 2
+🎯 Guess it 2
 
-## 📌 Overview
-This program predicts a **range for the next number** in a sequence using an **Adaptive Smoothing Algorithm**. It dynamically adjusts predictions based on **recent changes in the data**, ensuring a balance between **responsiveness to fluctuations** and **stability** within a dynamically adjusted range.
+🔢 Predictive Range Guesser
 
-## 🔹 How It Works
-### **1️⃣ Adaptive Trend Adjustment**
-- The program maintains a **trend estimate** (`trendPoint`), which adjusts based on incoming values.
-- The adjustment speed (`changeSpeed`) depends on how much the last value changed:
-  - **Small changes** → Slow adjustment (10%)
-  - **Moderate changes** → Medium adjustment (15%)
-  - **Large changes** → Fast adjustment (25%)
+📝 Overview
 
-### **2️⃣ Dynamic Range Prediction**
-- Instead of a **fixed ±6 range**, the prediction **expands if recent jumps were large**.
-- **Formula for range:**
-  ```
-  Lower Bound = trendPoint - dynamicRange
-  Upper Bound = trendPoint + dynamicRange
-  ```
-  - `dynamicRange = 6.0 + (recentChange * 0.2)`
+This program implements an Adaptive Smoothing Algorithm to predict a range for the next number in a sequence. The focus is on dynamically adjusting predictions based on recent changes in the data, ensuring a balance between responsiveness to fluctuations and maintaining stability within a dynamically adjusted range.
 
-### **3️⃣ Continuous Learning**
-- The program continuously refines its predictions **with each new value**.
-- If the first number is given, it prints:
-  ```
-  No prediction available
-  ```
-  since there’s no previous data to compare.
+🔍 How It Works
 
----
+📊 Core Concepts
 
-## 📌 How to Run the Program
-### **1️⃣ Ensure the Script Has Execution Permissions**
-Run the following command:
-```sh
+⚙️ Adaptive Smoothing Algorithm
+
+The algorithm adjusts predictions dynamically based on the magnitude of recent changes in the sequence.
+The smoothing factor is not fixed but adapts based on the difference between the last two numbers:
+
+Small changes → Lower adjustment rate (10%)
+
+Moderate changes → Balanced adjustment rate (15%)
+
+Large changes → Higher adjustment rate (25%)
+
+📏 Prediction Ranges
+
+The prediction is centered around an adjusted value that moves toward the new input by a percentage-based adjustment.
+A dynamically adjusted range is applied to ensure flexibility in predictions.
+Example: If the adjusted prediction is 150 and the recent change was significant, the output range will be broader than if the change was minimal.
+
+🔄 Adaptation to Data
+
+The model continuously updates based on incoming values, allowing it to adjust quickly to sudden spikes while remaining stable during steady sequences.
+
+🌟 Key Features
+
+📡 Dynamic Prediction
+
+Predictions continuously refine as new values are read.
+
+The algorithm ensures faster responses to sudden increases or decreases while preventing overcorrection.
+
+🎯 Range Estimation
+
+The dynamically adjusted range allows for better handling of both stable and volatile data.
+
+The adaptive smoothing approach ensures more accurate predictions without being overly sensitive to outliers.
+
+⚡ Efficiency
+
+The program relies only on the previous value and its difference from the new value, making it computationally lightweight while still responsive to trends.
+
+🔧 Configuration
+
+Smoothing Factors:
+
+Adjust the smoothing factors to fine-tune responsiveness based on changes in input values.
+
+Example:
+
+smallChangeFactor = 0.10
+moderateChangeFactor = 0.15
+largeChangeFactor = 0.25
+
+Prediction Range:
+
+The dynamically adjusted range ensures flexibility in predictions.
+
+Example:
+
+baseRange = 6.0
+rangeAdjustmentFactor = 0.2
+
+📚 Study
+
+Adaptive Smoothing Algorithm
+
+🛠️ Test the Program
+
+Check if script.sh has executable permissions after cloning. Sometimes these permissions can be changed when cloned if the environment is different than the one when the file was pushed to the repository.
+If the file has executable permissions, proceed to the next steps. Otherwise, give the permission using:
+
 chmod +x script.sh
-```
 
-### **2️⃣ Run the Test Environment**
-Download the [tester zip file](https://assets.01-edu.org/guess-it/guess-it-dockerized.zip) and place the **student/** folder in the root directory.
+Run the test by downloading this zip file containing the tester. You should place the student/ folder in the root directory of the items provided.
 
-Start the environment with:
-```sh
+Verify that Docker Desktop is running.
+
+These commands should be run (on the root directory of files downloaded) to install dependencies and start the webpage on port 3000:
+
 docker compose up --build
-```
-Then open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
-### **3️⃣ Add a Guesser (If Needed)**
-If required, modify the URL:
-```
-http://localhost:3000?guesser=big-range
-```
+After opening your browser on the port 3000, if you try clicking on any of the Test Data buttons, you will notice that in the Dev Tools/ Console there is a message indicating that you need another guesser besides the student.
 
-### **4️⃣ Run the Required Tests**
-- You must pass **Test4** and **Test5** with the following guessers:
-  - `big-range`
-  - `linear-regr`
-  - `correlation-coef`
-  - `mse`
-  - `nic`
+Adding a guesser is simple. You need to add in the URL a guesser, in other words, the name of one of the files present in the ai/ folder:
 
-Each test must be run **3 times**, and you need to pass **at least 2 out of 3** to pass the audit.
+?guesser=<name_of_guesser>
 
----
+For example:
 
-## 📌 Code Breakdown
-### **🔹 Key Functions**
-#### **1️⃣ adjustPrediction(newValue, lastValue)**
-- Adjusts the trend estimate (`trendPoint`) based on the new value.
-- Uses **adaptive smoothing** to avoid overcorrection.
+?guesser=big-range
 
-#### **2️⃣ Dynamic Range Calculation**
-- Expands the range dynamically based on **recent changes**:
-  ```go
-  dynamicRange := 6.0 + (math.Abs(newValue - lastValue) * 0.2)
-  ```
+After that, choose one of the random datasets to test. You can wait for the program to test all of the values, or you can click Quick to skip the waiting and be presented with the results.
 
-#### **3️⃣ First Value Handling**
-- If no previous data exists, prints:
-  ```
-  No prediction available
-  ```
+Since the website uses large datasets, we advise clearing the displays by clicking on the Clean button after each test.
 
----
+You will need to test big-range, linear-regr, correlation-coef, mse, and nic.
+For each of these, you will need to test Test4 and Test5 three times each.
+If the student program wins at least 2/3 of each test, they pass the audit.
 
-## 🔹 Why This Approach?
-✅ **Balances accuracy and stability** by dynamically adjusting the trend.  
-✅ **More efficient than storing all past values**, since it only needs the last number.  
-✅ **Adaptable to different data patterns**, making it **more effective than a fixed range.**  
-
----
-
-## 📌 Troubleshooting
-### **1️⃣ Script Permission Denied**
-If you see:
-```
-/bin/sh: 1: ./student/script.sh: Permission denied
-```
-Run:
-```sh
-chmod +x student/script.sh
-```
-
-### **2️⃣ Docker Issues**
-If Docker doesn’t start:
-```sh
-docker compose down
-docker compose up --build
-```
-
-
-## ✨ Final Notes
-This project **successfully predicts number ranges using an adaptive trend model**. The approach ensures **fast reaction to changes** while preventing **overcorrection**.  
-
----
-
-### **🔹 Authors**
+✍️ Authors
 - _Vicky Apostolou_
 
