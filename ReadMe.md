@@ -14,7 +14,7 @@ guess-it-2/
 
 📝 Overview
 
-This program implements an Adaptive Smoothing Algorithm to predict a range for the next number in a sequence. The focus is on dynamically adjusting predictions based on recent changes in the data, ensuring a balance between responsiveness to fluctuations and maintaining stability within a dynamically adjusted range.
+This program implements an Adaptive Smoothing Algorithm to predict a range for the next number in a sequence.
 
 🧮 How It Works
 
@@ -31,10 +31,10 @@ This program implements an Adaptive Smoothing Algorithm to predict a range for t
      - Medium changes (>10): Moderate adjustment (15%)
      - Small changes: Gentle adjustment (10%)
 
-3. 📈 **Dynamic Range Prediction**
-   - Base range: 6.0 units
-   - Dynamic component: 20% of recent change
-   - Final range: [prediction - range] to [prediction + range]
+3. 📈 **Range Prediction**
+   - Fixed range: ±6 units around prediction
+   - Provides upper and lower bounds
+   - Simple and reliable boundaries
 
 4. 🔄 **Input/Output**
    - Input: One number per line
@@ -45,39 +45,19 @@ This program implements an Adaptive Smoothing Algorithm to predict a range for t
 
 - 🎯 Adaptive trend calculation
 - 🔄 Three-tier adjustment system
-- 📊 Dynamic range based on recent changes
+- 📊 Fixed prediction range
 - ⚡ Simple and efficient implementation
-
-📏 Range Estimation
-
-The dynamically adjusted range allows for better handling of both stable and volatile data.
-
-The adaptive smoothing approach ensures more accurate predictions without being overly sensitive to outliers.
-
-⚡ Efficiency
-
-The program relies only on the previous value and its difference from the new value, making it computationally lightweight while still responsive to trends.
 
 ⚙️ Configuration
 
-🔧 Smoothing Factors:
-
-Adjust the smoothing factors to fine-tune responsiveness based on changes in input values.
-
-Example:
-
-smallChangeFactor = 0.10
-moderateChangeFactor = 0.15
-largeChangeFactor = 0.25
+🔧 Adjustment Speeds:
+- Small changes: 10% adjustment
+- Medium changes: 15% adjustment
+- Large changes: 25% adjustment
 
 📐 Prediction Range:
-
-The dynamically adjusted range ensures flexibility in predictions.
-
-Example:
-
-baseRange = 6.0
-rangeAdjustmentFactor = 0.2
+- Fixed range: ±6 units
+- Simple and consistent boundaries
 
 📚 Study
 
@@ -116,6 +96,11 @@ Since the website uses large datasets, we advise clearing the displays by clicki
 You will need to test big-range, linear-regr, correlation-coef, mse, and nic.
 For each of these, you will need to test Test4 and Test5 three times each.
 If the student program wins at least 2/3 of each test, they pass the audit.
+
+💡 Tips:
+- Use Clean button between tests
+- Quick button skips waiting time
+- Test against different guessers
 
 👩‍💻 Authors
 - _Vicky Apostolou_
