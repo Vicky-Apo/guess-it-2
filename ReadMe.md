@@ -7,6 +7,8 @@
 guess-it-2/
 ├── student/
 │   └── main.go    # Main implementation of the prediction algorithm
+│   └── script.sh
+│   └── go.mod
 └── ReadMe.md      # Project documentation
 ```
 
