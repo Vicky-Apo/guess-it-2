@@ -6,76 +6,71 @@ import (
 	"os"
 )
 
-// Keeps track of the trend we use for prediction
-var trendPoint float64
-var isFirstInput bool = true
+// Global variables for tracking prediction state
+var currentTrend float64
+var isFirstInput = true
 
-// Function to adjust the predicted trend based on the latest number
-func adjustPrediction(newValue float64, lastValue float64) float64 {
-	// If it's the first number, set it as the trend and return
+// updateTrend calculates the next prediction based on new input
+func updateTrend(newValue, lastValue float64) float64 {
+	// Handle first input
 	if isFirstInput {
 		isFirstInput = false
-		trendPoint = newValue
-		return trendPoint
+		currentTrend = newValue
+		return currentTrend
 	}
 
-	// Measure how much the value changed
+	// Calculate change between values
 	difference := math.Abs(newValue - lastValue)
 
-	// Define how fast the trend should adjust
-	var changeSpeed float64
-	if difference > 20 { // Big jump → adjust quickly
-		changeSpeed = 0.25
-	} else if difference > 10 { // Medium change → moderate adjustment
-		changeSpeed = 0.15
-	} else { // Small change → slow adaptation
-		changeSpeed = 0.10
+	// Determine adjustment rate based on change size
+	adjustmentRate := 0.10 // default for small changes
+	if difference > 20 {
+		adjustmentRate = 0.25 // large changes
+	} else if difference > 10 {
+		adjustmentRate = 0.15 // medium changes
 	}
 
-	// Calculate how much to shift the trend
-	shiftAmount := difference * changeSpeed
-	if newValue > trendPoint {
-		trendPoint += shiftAmount
+	// Update trend direction
+	if newValue > currentTrend {
+		currentTrend += difference * adjustmentRate
 	} else {
-		trendPoint -= shiftAmount
+		currentTrend -= difference * adjustmentRate
 	}
 
-	return trendPoint
+	return currentTrend
 }
 
 func main() {
 	var lastValue float64
+	fmt.Println("Enter numbers (one per line, Ctrl+D to stop):")
 
-	// Read numbers one by one
 	for {
+		// Get input
 		var newNumber float64
-		_, err := fmt.Fscan(os.Stdin, &newNumber)
-		if err != nil {
+		if _, err := fmt.Fscan(os.Stdin, &newNumber); err != nil {
+			fmt.Println("\nProgram finished!")
 			break
 		}
 
-		// Handle the first input separately
+		// Handle first number
 		if isFirstInput {
-			fmt.Println("No prediction available")
-			adjustPrediction(newNumber, newNumber)
+			fmt.Println("First number received. No prediction available yet.")
+			updateTrend(newNumber, newNumber)
 			lastValue = newNumber
 			continue
 		}
 
-		// Adjust prediction based on the new number
-		predictedValue := adjustPrediction(newNumber, lastValue)
+		// Make prediction
+		predictedTrend := updateTrend(newNumber, lastValue)
 
-		// Dynamic range: Increase if recent jumps were large
-		dynamicRange := 6.0 + (math.Abs(newNumber-lastValue) * 0.2)
+		// Calculate adaptive range based on volatility
+		predictionRange := 6.0 + (math.Abs(newNumber-lastValue) * 0.2)
 
-		// Define prediction boundaries
-		lowerBound := predictedValue - dynamicRange
-		upperBound := predictedValue + dynamicRange
+		// Print prediction
+		fmt.Printf("Next prediction: %.2f to %.2f\n",
+			predictedTrend-predictionRange,
+			predictedTrend+predictionRange)
 
-		// Output the predicted range
-		fmt.Printf("%.2f %.2f\n", lowerBound, upperBound)
-
-		// Update last known value
 		lastValue = newNumber
 	}
 }

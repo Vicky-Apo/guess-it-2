@@ -2,6 +2,14 @@
 
 🔢 Predictive Range Guesser
 
+📁 Project Structure
+```
+guess-it-2/
+├── student/
+│   └── main.go    # Main implementation of the prediction algorithm
+└── ReadMe.md      # Project documentation
+```
+
 📝 Overview
 
 This program implements an Adaptive Smoothing Algorithm to predict a range for the next number in a sequence. The focus is on dynamically adjusting predictions based on recent changes in the data, ensuring a balance between responsiveness to fluctuations and maintaining stability within a dynamically adjusted range.
@@ -73,6 +81,7 @@ rangeAdjustmentFactor = 0.2
 📚 Study
 
 Adaptive Smoothing Algorithm
+
 
 🛠️ Test the Program
 
